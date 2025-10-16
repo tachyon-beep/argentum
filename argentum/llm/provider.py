@@ -76,7 +76,7 @@ class OpenAIProvider(LLMProvider):
 
         response = await self._client.chat.completions.create(
             model=self.model,
-            messages=messages,
+            messages=messages,  # type: ignore[arg-type]
             temperature=temperature,
             max_tokens=max_tokens,
             **kwargs,
@@ -137,7 +137,7 @@ class AzureOpenAIProvider(LLMProvider):
 
         response = await self._client.chat.completions.create(
             model=self.deployment_name,
-            messages=messages,
+            messages=messages,  # type: ignore[arg-type]
             temperature=temperature,
             max_tokens=max_tokens,
             **kwargs,

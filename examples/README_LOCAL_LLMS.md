@@ -105,21 +105,25 @@ result = await debate.run()
 ## Troubleshooting
 
 ### Connection Refused
+
 - Make sure your server is running: `curl http://localhost:5000/v1/models`
 - Check the port number matches your server configuration
 - Verify the `/v1` path is correct for your server
 
 ### Slow Responses
+
 - Use GPU acceleration if available
 - Reduce `max_tokens` in generation calls
 - Try a smaller or quantized model
 - Enable batching in your server if supported
 
 ### Invalid API Key Errors
+
 - Some servers require a dummy key: try `"dummy"`, `"not-needed"`, or `"sk-dummy"`
 - Check your server's documentation for authentication requirements
 
 ### Model Not Found
+
 - List available models: `curl http://localhost:5000/v1/models`
 - Use the exact model name from the list
 - Some servers accept any model name and use their loaded model

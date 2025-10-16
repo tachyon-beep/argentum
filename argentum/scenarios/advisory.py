@@ -40,16 +40,12 @@ class CTOAdvisoryPanel:
             "security": {
                 "name": "Chief Security Officer",
                 "persona": (
-                    "Expert in cybersecurity, threat modeling, and compliance. "
-                    "You assess security risks and data protection concerns."
+                    "Expert in cybersecurity, threat modeling, and compliance. You assess security risks and data protection concerns."
                 ),
             },
             "finance": {
                 "name": "Chief Financial Officer",
-                "persona": (
-                    "Expert in cost analysis, ROI, and financial planning. "
-                    "You evaluate budget impacts and long-term costs."
-                ),
+                "persona": ("Expert in cost analysis, ROI, and financial planning. You evaluate budget impacts and long-term costs."),
             },
             "engineering": {
                 "name": "VP of Engineering",
@@ -61,8 +57,7 @@ class CTOAdvisoryPanel:
             "product": {
                 "name": "Chief Product Officer",
                 "persona": (
-                    "Expert in user experience, product strategy, and market fit. "
-                    "You consider customer impact and competitive advantage."
+                    "Expert in user experience, product strategy, and market fit. You consider customer impact and competitive advantage."
                 ),
             },
             "operations": {
