@@ -29,7 +29,7 @@ class TestAgentConfig:
             persona="Test",
         )
         assert config.role == Role.PARTICIPANT
-        assert config.temperature == 0.7
+        assert abs(config.temperature - 0.7) < 1e-9
         assert config.max_tokens == 1000
 
     def test_agent_config_with_tools(self):
