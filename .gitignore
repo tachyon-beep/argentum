@@ -1,0 +1,82 @@
+# Ignore vscode AI rules
+.github/instructions/codacy.instructions.md
+
+# Python virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Environment variables and secrets
+.env
+.env.local
+*.key
+*.pem
+
+# Python compiled files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.dll
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+# Testing and coverage
+.tox/
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+htmlcov/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+
+# IDEs
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Logs and databases
+*.log
+*.sqlite
+*.sqlite3
+*.db
+
+# Documentation builds
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# Instance-specific files
+instance/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
