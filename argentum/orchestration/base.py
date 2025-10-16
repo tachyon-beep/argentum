@@ -28,7 +28,6 @@ class Orchestrator(ABC):
         Returns:
             Orchestration result
         """
-        ...
 
     def _prepare_task(self, task: Task | str) -> Task:
         """Convert task to Task object if it's a string.

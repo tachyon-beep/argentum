@@ -46,7 +46,7 @@ class ChatManager:
     def select_next_speaker(
         self,
         agents: Sequence[Agent],
-        context: Context,  # noqa: ARG002
+        _context: Context,
     ) -> Agent | None:
         """Select the next speaker in the conversation.
 
@@ -64,11 +64,9 @@ class ChatManager:
         if self._current_turn >= self.max_turns:
             return None
 
-        if self.selection_mode == SpeakerSelectionMode.ROUND_ROBIN:
-            return self._select_round_robin(agents)
-        else:
-            # Default to round-robin for now
-            return self._select_round_robin(agents)
+        # All selection modes default to round-robin for now
+        # Future: implement RANDOM, MANUAL, AUTO modes
+        return self._select_round_robin(agents)
 
     def _select_round_robin(self, agents: Sequence[Agent]) -> Agent:
         """Select next speaker in round-robin fashion.
@@ -84,7 +82,7 @@ class ChatManager:
 
     def should_terminate(
         self,
-        context: Context,  # noqa: ARG002
+        _context: Context,
     ) -> tuple[bool, TerminationReason]:
         """Check if conversation should terminate.
 

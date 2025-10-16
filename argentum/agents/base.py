@@ -52,7 +52,6 @@ class Agent(ABC):
         Returns:
             Agent's response
         """
-        ...
 
     def receive_message(self, message: Message) -> None:
         """Receive and store a message.

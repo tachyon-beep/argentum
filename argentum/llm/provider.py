@@ -13,24 +13,20 @@ class LLMProvider(ABC):
     @abstractmethod
     def count_tokens(self, messages: list["Message"]) -> int:
         """Count tokens in a message list."""
-        ...
 
     @abstractmethod
     async def generate_with_tools(
         self, messages: list["Message"], tools: list[dict[str, Any]], **kwargs: Any
     ) -> "AgentResponse":
         """Generate with tool support."""
-        ...
 
     @abstractmethod
     def get_model_name(self) -> str:
         """Get the model name."""
-        ...
 
     @abstractmethod
     async def generate(self, messages: list[dict[str, str]], **kwargs: Any) -> str:
         """Generate a response from the model."""
-        ...
 
 
 class OpenAIProvider(LLMProvider):

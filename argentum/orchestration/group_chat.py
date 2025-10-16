@@ -104,7 +104,7 @@ class GroupChatOrchestrator(Orchestrator):
                 # Record turn
                 self.chat_manager.record_turn(next_speaker)
 
-            except Exception as e:
+            except (RuntimeError, ValueError, TypeError) as e:
                 # Handle agent error
                 error_message = Message(
                     type=MessageType.SYSTEM,

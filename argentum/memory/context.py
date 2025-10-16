@@ -81,11 +81,11 @@ class Context(BaseModel):
         """
         return {msg.sender for msg in self.messages}
 
-    async def summarize(self, max_length: int = 500) -> str:
+    async def summarize(self, _max_length: int = 500) -> str:
         """Generate a summary of the conversation.
 
         Args:
-            max_length: Maximum length of the summary
+            _max_length: Maximum length of the summary (reserved for future use)
 
         Returns:
             Conversation summary

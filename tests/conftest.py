@@ -17,7 +17,7 @@ class MockLLMProvider(LLMProvider):
         self.call_count = 0
 
     async def generate(
-        self, messages: list[dict[str, str]], temperature: float = 0.7, max_tokens: int = 1000, **kwargs: Any
+        self, messages: list[dict[str, str]], _temperature: float = 0.7, _max_tokens: int = 1000, **kwargs: Any
     ) -> str:
         """Generate a mock response."""
         self.call_count += 1

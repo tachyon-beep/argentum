@@ -21,7 +21,6 @@ HEADER_STYLE = "bold blue"
 @click.version_option(version="0.1.0")
 def cli() -> None:
     """Argentum - Multi-Agent AI Dialogue System."""
-    ...
 
 
 @cli.command()
@@ -82,7 +81,7 @@ def debate(topic: str, ministers: tuple[str, ...], rounds: int) -> None:
     except KeyboardInterrupt:
         console.print("\n[yellow]Debate interrupted by user[/yellow]")
         sys.exit(0)
-    except Exception as e:
+    except (RuntimeError, ValueError, OSError) as e:
         console.print(f"\n[red]Error: {e}[/red]")
         sys.exit(1)
 
@@ -145,7 +144,7 @@ def advisory(question: str, advisors: tuple[str, ...], rounds: int) -> None:
     except KeyboardInterrupt:
         console.print("\n[yellow]Consultation interrupted by user[/yellow]")
         sys.exit(0)
-    except Exception as e:
+    except (RuntimeError, ValueError, OSError) as e:
         console.print(f"\n[red]Error: {e}[/red]")
         sys.exit(1)
 
