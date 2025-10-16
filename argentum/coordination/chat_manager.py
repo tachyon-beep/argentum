@@ -1,5 +1,6 @@
 """Chat manager for coordinating multi-agent conversations."""
 
+from collections import Counter
 from collections.abc import Sequence
 from enum import Enum
 from typing import Any
@@ -141,8 +142,6 @@ class ChatManager:
         Returns:
             Dictionary of statistics
         """
-        from collections import Counter
-
         speaker_counts = Counter(self._speaker_history)
 
         return {

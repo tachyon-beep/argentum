@@ -1,4 +1,5 @@
 """LLM provider abstractions."""
+# pylint: disable=import-outside-toplevel  # Lazy imports to avoid circular dependencies and heavy overhead
 
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
@@ -15,9 +16,7 @@ class LLMProvider(ABC):
         """Count tokens in a message list."""
 
     @abstractmethod
-    async def generate_with_tools(
-        self, messages: list["Message"], tools: list[dict[str, Any]], **kwargs: Any
-    ) -> "AgentResponse":
+    async def generate_with_tools(self, messages: list["Message"], tools: list[dict[str, Any]], **kwargs: Any) -> "AgentResponse":
         """Generate with tool support."""
 
     @abstractmethod
@@ -30,18 +29,32 @@ class LLMProvider(ABC):
 
 
 class OpenAIProvider(LLMProvider):
-    """OpenAI LLM provider."""
+    """OpenAI LLM provider.
+
+    Supports both OpenAI's official API and OpenAI-compatible local servers
+    (like llama.cpp, vLLM, LocalAI, etc.) via the base_url parameter.
+    """
 
     def __init__(
         self,
         model: str = "gpt-4",
         api_key: str | None = None,
         organization: str | None = None,
+        base_url: str | None = None,
     ):
-        """Initialize OpenAI provider."""
+        """Initialize OpenAI provider.
+
+        Args:
+            model: Model name to use
+            api_key: OpenAI API key (or dummy value for local servers)
+            organization: OpenAI organization ID (optional)
+            base_url: Custom base URL for OpenAI-compatible servers
+                     (e.g., "http://localhost:5000/v1" for local LLMs)
+        """
         self.model = model
         self.api_key = api_key
         self.organization = organization
+        self.base_url = base_url
         self._client: Any | None = None
 
     async def generate(
@@ -51,15 +64,19 @@ class OpenAIProvider(LLMProvider):
         max_tokens: int = 1000,
         **kwargs: Any,
     ) -> str:
-        """Generate a response using OpenAI's API."""
+        """Generate a response using OpenAI's API or compatible server."""
         if self._client is None:
             from openai import AsyncOpenAI
 
-            self._client = AsyncOpenAI(api_key=self.api_key, organization=self.organization)
+            self._client = AsyncOpenAI(
+                api_key=self.api_key,
+                organization=self.organization,
+                base_url=self.base_url,
+            )
 
         response = await self._client.chat.completions.create(
             model=self.model,
-            messages=messages,  # type: ignore[arg-type]
+            messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
             **kwargs,
@@ -75,9 +92,7 @@ class OpenAIProvider(LLMProvider):
         """Count tokens in messages (rough estimate)."""
         return sum(len(str(m)) for m in messages) // 4
 
-    async def generate_with_tools(
-        self, messages: list["Message"], tools: list[dict[str, Any]], **kwargs: Any
-    ) -> "AgentResponse":
+    async def generate_with_tools(self, messages: list["Message"], tools: list[dict[str, Any]], **kwargs: Any) -> "AgentResponse":
         """Generate response with tool support."""
         from argentum.models import AgentResponse
 
@@ -122,7 +137,7 @@ class AzureOpenAIProvider(LLMProvider):
 
         response = await self._client.chat.completions.create(
             model=self.deployment_name,
-            messages=messages,  # type: ignore[arg-type]
+            messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
             **kwargs,
@@ -143,9 +158,7 @@ class AzureOpenAIProvider(LLMProvider):
         """Count tokens in messages (rough estimate)."""
         return sum(len(str(m)) for m in messages) // 4
 
-    async def generate_with_tools(
-        self, messages: list["Message"], tools: list[dict[str, Any]], **kwargs: Any
-    ) -> "AgentResponse":
+    async def generate_with_tools(self, messages: list["Message"], tools: list[dict[str, Any]], **kwargs: Any) -> "AgentResponse":
         """Generate response with tool support."""
         from argentum.models import AgentResponse
 

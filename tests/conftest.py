@@ -6,7 +6,7 @@ import pytest
 
 from argentum.agents.base import AgentConfig
 from argentum.llm.provider import LLMProvider
-from argentum.models import Role
+from argentum.models import AgentResponse, Role
 
 
 class MockLLMProvider(LLMProvider):
@@ -16,9 +16,7 @@ class MockLLMProvider(LLMProvider):
         self.response = response
         self.call_count = 0
 
-    async def generate(
-        self, messages: list[dict[str, str]], _temperature: float = 0.7, _max_tokens: int = 1000, **kwargs: Any
-    ) -> str:
+    async def generate(self, messages: list[dict[str, str]], _temperature: float = 0.7, _max_tokens: int = 1000, **kwargs: Any) -> str:
         """Generate a mock response."""
         self.call_count += 1
         return self.response
@@ -33,8 +31,6 @@ class MockLLMProvider(LLMProvider):
 
     async def generate_with_tools(self, messages: list[Any], tools: list[dict[str, Any]], **kwargs: Any) -> Any:
         """Generate with tool support."""
-        from argentum.models import AgentResponse
-
         return AgentResponse(agent_name="mock", content=self.response)
 
 

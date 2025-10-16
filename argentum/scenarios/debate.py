@@ -39,19 +39,31 @@ class GovernmentDebate:
         self.minister_configs = {
             "finance": {
                 "name": "Minister of Finance",
-                "persona": "Focus on fiscal responsibility, economic growth, and budget impacts. You analyze costs and financial sustainability.",
+                "persona": (
+                    "Focus on fiscal responsibility, economic growth, and budget impacts. "
+                    "You analyze costs and financial sustainability."
+                ),
             },
             "environment": {
                 "name": "Minister of Environment",
-                "persona": "Focus on environmental protection, sustainability, and climate impact. You advocate for green policies.",
+                "persona": (
+                    "Focus on environmental protection, sustainability, and climate impact. "
+                    "You advocate for green policies."
+                ),
             },
             "defense": {
                 "name": "Minister of Defense",
-                "persona": "Focus on national security, strategic implications, and protection of citizens. You prioritize safety and security.",
+                "persona": (
+                    "Focus on national security, strategic implications, and protection of citizens. "
+                    "You prioritize safety and security."
+                ),
             },
             "health": {
                 "name": "Minister of Health",
-                "persona": "Focus on public health, healthcare access, and wellbeing of citizens. You prioritize health outcomes.",
+                "persona": (
+                    "Focus on public health, healthcare access, and wellbeing of citizens. "
+                    "You prioritize health outcomes."
+                ),
             },
             "education": {
                 "name": "Minister of Education",
@@ -126,12 +138,10 @@ Instructions: Each minister should:
 Let's begin the debate.
         """.strip()
 
-        result = await orchestrator.execute(
+        return await orchestrator.execute(
             agents=self.agents,
             task=task_description,
         )
-
-        return result
 
 
 async def main() -> None:

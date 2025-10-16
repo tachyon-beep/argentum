@@ -39,19 +39,31 @@ class CTOAdvisoryPanel:
         self.advisor_configs = {
             "security": {
                 "name": "Chief Security Officer",
-                "persona": "Expert in cybersecurity, threat modeling, and compliance. You assess security risks and data protection concerns.",
+                "persona": (
+                    "Expert in cybersecurity, threat modeling, and compliance. "
+                    "You assess security risks and data protection concerns."
+                ),
             },
             "finance": {
                 "name": "Chief Financial Officer",
-                "persona": "Expert in cost analysis, ROI, and financial planning. You evaluate budget impacts and long-term costs.",
+                "persona": (
+                    "Expert in cost analysis, ROI, and financial planning. "
+                    "You evaluate budget impacts and long-term costs."
+                ),
             },
             "engineering": {
                 "name": "VP of Engineering",
-                "persona": "Expert in technical architecture, scalability, and engineering best practices. You assess technical feasibility and complexity.",
+                "persona": (
+                    "Expert in technical architecture, scalability, and engineering best practices. "
+                    "You assess technical feasibility and complexity."
+                ),
             },
             "product": {
                 "name": "Chief Product Officer",
-                "persona": "Expert in user experience, product strategy, and market fit. You consider customer impact and competitive advantage.",
+                "persona": (
+                    "Expert in user experience, product strategy, and market fit. "
+                    "You consider customer impact and competitive advantage."
+                ),
             },
             "operations": {
                 "name": "VP of Operations",
@@ -126,12 +138,10 @@ Instructions: Each advisor should:
 Let's begin the consultation.
         """.strip()
 
-        result = await orchestrator.execute(
+        return await orchestrator.execute(
             agents=self.agents,
             task=task_description,
         )
-
-        return result
 
 
 async def main() -> None:

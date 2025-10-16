@@ -1,6 +1,5 @@
 """Tests for chat manager and coordination."""
 
-
 from conftest import MockLLMProvider
 
 from argentum.agents.llm_agent import LLMAgent

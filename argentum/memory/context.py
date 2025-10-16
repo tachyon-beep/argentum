@@ -1,12 +1,17 @@
 """Context and memory management."""
 
+# pylint: disable=no-member
+# Pylint has issues with Pydantic v2 field descriptors, incorrectly treating
+# fields like `messages: list[Message]` as FieldInfo instead of their actual type.
+# This is a known false positive: https://github.com/pylint-dev/pylint/issues/8138
+
 from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from argentum.models import Message  # noqa: TCH001
+from argentum.models import Message
 
 
 class Context(BaseModel):

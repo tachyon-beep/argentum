@@ -109,7 +109,7 @@ class GroupChatOrchestrator(Orchestrator):
                 error_message = Message(
                     type=MessageType.SYSTEM,
                     sender="orchestrator",
-                    content=f"Error from {next_speaker.name}: {str(e)}",
+                    content=f"Error from {next_speaker.name}: {e!s}",
                     metadata={"error": True, "agent": next_speaker.name},
                 )
                 ctx.add_message(error_message)

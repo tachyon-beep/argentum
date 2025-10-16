@@ -2,4 +2,4 @@
 
 from argentum.llm.provider import AzureOpenAIProvider, LLMProvider, OpenAIProvider
 
-__all__ = ["LLMProvider", "OpenAIProvider", "AzureOpenAIProvider"]
+__all__ = ["AzureOpenAIProvider", "LLMProvider", "OpenAIProvider"]

@@ -67,7 +67,7 @@ class ConcurrentOrchestrator(Orchestrator):
                 error_message = Message(
                     type=MessageType.SYSTEM,
                     sender="orchestrator",
-                    content=f"Agent {agent.name} failed: {str(response)}",
+                    content=f"Agent {agent.name} failed: {response!s}",
                     metadata={"error": True},
                 )
                 ctx.add_message(error_message)

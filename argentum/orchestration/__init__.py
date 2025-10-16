@@ -5,7 +5,7 @@ from argentum.orchestration.group_chat import GroupChatOrchestrator
 from argentum.orchestration.sequential import SequentialOrchestrator
 
 __all__ = [
-    "SequentialOrchestrator",
     "ConcurrentOrchestrator",
     "GroupChatOrchestrator",
+    "SequentialOrchestrator",
 ]

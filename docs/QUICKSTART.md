@@ -65,7 +65,7 @@ argentum list-roles
 
 ### 2. Python API
 
-#### Simple Group Chat
+#### 2.1 Simple Group Chat
 
 ```python
 import asyncio
@@ -116,7 +116,7 @@ async def main():
 asyncio.run(main())
 ```
 
-#### Sequential Pipeline
+#### 2.2 Sequential Pipeline
 
 ```python
 import asyncio
@@ -153,7 +153,7 @@ async def main():
 asyncio.run(main())
 ```
 
-#### Concurrent Analysis
+#### 2.3 Concurrent Analysis
 
 ```python
 import asyncio
@@ -192,7 +192,7 @@ asyncio.run(main())
 
 ### 3. Pre-built Scenarios
 
-#### Government Debate
+#### 3.1 Government Debate
 
 ```python
 import asyncio
@@ -211,7 +211,7 @@ async def main():
 asyncio.run(main())
 ```
 
-#### CTO Advisory Panel
+#### 3.2 CTO Advisory Panel
 
 ```python
 import asyncio

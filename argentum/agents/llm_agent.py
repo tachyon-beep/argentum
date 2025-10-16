@@ -51,12 +51,10 @@ class LLMAgent(Agent):
         )
 
         # Prepare messages for the LLM
-        all_messages = [system_message] + messages
+        all_messages = [system_message, *messages]
 
         # Convert to provider format
-        provider_messages = [
-            {"role": msg.type.value, "content": msg.content} for msg in all_messages
-        ]
+        provider_messages = [{"role": msg.type.value, "content": msg.content} for msg in all_messages]
 
         # Generate response
         response_content = await self.provider.generate(
