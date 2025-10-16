@@ -35,24 +35,28 @@ class LLMAgent(Agent):
             Agent's response
         """
         # Build the prompt with system message
-        system_message = Message(
-            type=MessageType.SYSTEM,
-            sender="system",
-            content=self.get_system_prompt(),
-        )
+        system_prompt = self.get_system_prompt()
 
         # Add context if provided
         if context:
             context_str = "\n\nAdditional Context:\n"
             for key, value in context.items():
                 context_str += f"- {key}: {value}\n"
-            system_message.content += context_str
+            system_prompt += context_str
+
+        system_message = Message(
+            type=MessageType.SYSTEM,
+            sender="system",
+            content=system_prompt,
+        )
 
         # Prepare messages for the LLM
         all_messages = [system_message] + messages
 
         # Convert to provider format
-        provider_messages = [{"role": msg.type.value, "content": msg.content} for msg in all_messages]
+        provider_messages = [
+            {"role": msg.type.value, "content": msg.content} for msg in all_messages
+        ]
 
         # Generate response
         response_content = await self.provider.generate(
