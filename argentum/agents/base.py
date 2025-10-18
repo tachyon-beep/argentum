@@ -20,6 +20,18 @@ class AgentConfig(BaseModel):
     system_prompt: str | None = None
     tools: list[str] = Field(default_factory=list)
     metadata: dict[str, Any] = Field(default_factory=dict)
+    speaking_style: str | None = Field(
+        default=None,
+        description="High-level tone descriptor (e.g., 'boardroom', 'podcast', 'casual').",
+    )
+    speech_tags: list[str] = Field(
+        default_factory=list,
+        description="Additional tone modifiers (e.g., ['measured','warm']).",
+    )
+    tts_voice: str | None = Field(
+        default=None,
+        description="Suggested TTS voice identifier for this agent.",
+    )
 
 
 class Agent(ABC):
@@ -92,6 +104,15 @@ class Agent(ABC):
 
         if self.config.system_prompt:
             base_prompt += f"{self.config.system_prompt}\n\n"
+
+        if self.config.speaking_style:
+            base_prompt += (
+                "Speaking Style: "
+                f"{self.config.speaking_style}.\n\n"
+            )
+
+        if self.config.speech_tags:
+            base_prompt += "Style notes: " + ", ".join(self.config.speech_tags) + "\n\n"
 
         if self.config.tools:
             base_prompt += f"You have access to the following tools: {', '.join(self.config.tools)}\n\n"

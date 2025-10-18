@@ -1,6 +1,7 @@
 """LLM provider abstractions."""
 # pylint: disable=import-outside-toplevel  # Lazy imports to avoid circular dependencies and heavy overhead
 
+import os
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
 
@@ -52,9 +53,9 @@ class OpenAIProvider(LLMProvider):
                      (e.g., "http://localhost:5000/v1" for local LLMs)
         """
         self.model = model
-        self.api_key = api_key
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.organization = organization
-        self.base_url = base_url
+        self.base_url = base_url or os.getenv("OPENAI_API_BASE")
         self._client: Any | None = None
 
     async def generate(
@@ -65,11 +66,15 @@ class OpenAIProvider(LLMProvider):
         **kwargs: Any,
     ) -> str:
         """Generate a response using OpenAI's API or compatible server."""
+        resolved_key = self.api_key or kwargs.pop("api_key", None) or os.getenv("OPENAI_API_KEY")
+
         if self._client is None:
+            if self.base_url is None and not resolved_key:
+                return "LLM output unavailable (missing OPENAI_API_KEY)."
             from openai import AsyncOpenAI
 
             self._client = AsyncOpenAI(
-                api_key=self.api_key,
+                api_key=resolved_key,
                 organization=self.organization,
                 base_url=self.base_url,
             )

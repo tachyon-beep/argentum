@@ -29,6 +29,7 @@ build/
 .eggs/
 wheels/
 pip-wheel-metadata/
+projects/
 
 # Testing and coverage
 .tox/

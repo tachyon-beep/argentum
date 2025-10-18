@@ -42,10 +42,20 @@ cp .env.example .env
 #### Government Debate
 
 ```bash
-# Run a debate about climate policy
+# Create a project workspace (stores data under workspace/<slug>/)
+argentum project init knit-cast --title "AI Knitting Circle"
+
+# Run a debate about climate policy and persist it to the workspace
 argentum debate "National carbon tax policy" \
+  --project knit-cast \
   --ministers finance environment health \
-  --rounds 3
+  --rounds 3 \
+  --summary-mode frontier  # requires OPENAI_API_KEY
+
+# Reuse the same workspace with a custom session id
+argentum debate "Universal basic income" \
+  --project knit-cast \
+  --session-id ubi-episode
 ```
 
 #### CTO Advisory Panel
@@ -53,14 +63,121 @@ argentum debate "National carbon tax policy" \
 ```bash
 # Get advice on a technical decision
 argentum advisory "Should we adopt Kubernetes?" \
+  --project knit-cast \
   --advisors security engineering operations \
-  --rounds 2
+  --rounds 2 \
+  --summary-mode local \
+  --summary-command "ollama run llama3.1"  # example local summariser
+
+# Append to an existing consultation session
+argentum advisory "Should we adopt Kubernetes?" \
+  --project knit-cast \
+  --session-id architecture-eval
 ```
 
 #### List Available Roles
 
 ```bash
 argentum list-roles
+```
+
+Transcripts, highlights, and knowledge graph updates are saved to `workspace/<project>/sessions/<session-id>/`.
+
+Customize agent personas at any time:
+
+```bash
+# Inspect and edit stored profiles
+argentum project agent show knit-cast host
+argentum project agent update knit-cast host --persona "Charismatic moderator" --temperature 0.4
+
+# Adjust tone and suggested TTS voice
+argentum project agent update knit-cast host \
+  --speaking-style podcast \
+  --speech-tag playful --speech-tag friendly \
+  --tts-voice podcast_female
+```
+
+#### Ingest & Retrieve Project Documents (RAG)
+
+```bash
+# Add background reading to the workspace
+argentum project docs ingest knit-cast docs/policy-brief.md --tag policy --tag 2026-q1
+
+# Inspect the indexed sources
+argentum project docs list knit-cast
+
+# Ad-hoc semantic search over the chunks
+argentum project docs search knit-cast --query "carbon dividend" --min-score 0.15
+
+# Maintenance helpers
+argentum project docs purge knit-cast policy-brief-20250101-120000
+argentum project docs rebuild knit-cast
+```
+
+When you start a session the top matching chunks are prefetched automatically. During the debate/advisory, any agent can ask for more context by typing `<<retrieve: your search terms>>`. The orchestrator will pause, ingest the new snippets (labeled `[Doc n]`), and the agents will cite them in their replies and in the session highlights.
+
+Try the self-contained demo:
+
+```bash
+python examples/two_actor_retrieval_demo.py
+```
+
+If you have a local OpenAI-compatible server (e.g. `http://localhost:5000/v1`) running a quantised 70B model, point Argentum at it with:
+
+```bash
+export OPENAI_API_KEY=sk-local-test
+export OPENAI_API_BASE=http://localhost:5000/v1
+argentum debate "Should we increase the carbon tax?" \
+  --project knit-cast \
+  --ministers finance --ministers environment \
+  --rounds 1
+```
+
+Generate ready-to-narrate scripts from the captured highlights:
+
+```bash
+python - <<'PY'
+import json, pathlib
+from argentum.workspace.knowledge import build_tts_markdown, build_tts_script
+
+highlights_path = pathlib.Path('workspace/knit-cast/sessions/<session-id>/highlights.json')
+highlights = json.loads(highlights_path.read_text())
+
+print("Markdown summary\n================")
+print(build_tts_markdown(highlights))
+
+print("JSON script\n============")
+print(build_tts_script(highlights))
+PY
+```
+
+### Project Workspaces
+
+```bash
+# Create a reusable workspace scaffold
+argentum project init knit-cast --title "AI Knitting Circle"
+
+# Inspect manifest and paths
+argentum project info knit-cast
+
+# Summarise knowledge captured so far
+argentum project knowledge knit-cast --show summary
+
+# Search warm cache highlights (FTS query)
+argentum project knowledge knit-cast --search "carbon"
+
+# Show retrieval history and citations for a session
+cat workspace/knit-cast/sessions/<session-id>/highlights.json
+
+# Inspect the project timeline
+argentum project timeline knit-cast --limit 10
+
+# List all known projects
+argentum project list
+
+# Compact warm-cache entries older than 60 days and purge a session
+argentum project compact knit-cast --days 60
+argentum project purge knit-cast --session ubi-episode --force
 ```
 
 ### 2. Python API
@@ -320,3 +437,7 @@ If you hit OpenAI rate limits:
 - GitHub Issues: <https://github.com/yourusername/argentum/issues>
 - Documentation: <https://argentum.readthedocs.io>
 - Examples: See `examples/` directory
+
+### Example: Two-Actor Retrieval Demo
+
+`examples/two_actor_retrieval_demo.py` spins up a lightweight workspace, ingests a background briefing, and runs two scripted ministers through a debate. The first agent requests additional evidence with `<<retrieve: ...>>`; both agents then cite `[Doc 1]` in their replies and the resulting `highlights.json` logs the retrieval history and sources.

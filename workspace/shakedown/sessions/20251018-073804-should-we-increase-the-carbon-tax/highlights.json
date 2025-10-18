@@ -1,0 +1,95 @@
+{
+  "session_id": "20251018-073804-should-we-increase-the-carbon-tax",
+  "command": "debate",
+  "consensus": "No consensus reached - no responses.",
+  "topic": "Should we increase the carbon tax?",
+  "project_id": "shakedown",
+  "agents": [],
+  "quotes": [],
+  "timestamp": "2025-10-18T07:38:04.056075+00:00",
+  "summary": "No consensus reached - no responses.",
+  "action_items": [],
+  "retrieved_docs": [
+    {
+      "doc_id": "shakedown-policy-20251018073743",
+      "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+      "text": "Carbon tax policy briefing Key findings: - Incremental increases of $5 per ton maintain competitiveness. - Revenue recycling funds community solar programs. - Recent market report (April 2025) notes a 12% rise in clean-tech jobs when carbon pricing is paired with rebates. Implementation notes: - Coordinate with finance ministry for dividend schedule. - Monitor global commodity prices quarterly.",
+      "score": 0.18257418583505536,
+      "metadata": {
+        "chunk": {
+          "position": 1
+        },
+        "document": {
+          "title": "shakedown-policy",
+          "tags": [
+            "policy",
+            "2025"
+          ],
+          "label": "Doc 1"
+        },
+        "source_path": "/home/john/argentum/shakedown-policy.md",
+        "title": "shakedown-policy",
+        "tags": [
+          "policy",
+          "2025"
+        ],
+        "ingested_at": "2025-10-18T07:37:43.342317+00:00",
+        "chunk_size": 200,
+        "overlap": 40
+      },
+      "label": "Doc 1"
+    }
+  ],
+  "citations": [],
+  "retrieval_history": [
+    {
+      "query": "Should we increase the carbon tax?",
+      "labels": [
+        "Doc 1"
+      ],
+      "count": 1
+    }
+  ],
+  "items": [
+    {
+      "session_id": "20251018-073804-should-we-increase-the-carbon-tax",
+      "type": "summary",
+      "agent": null,
+      "text": "No consensus reached - no responses.",
+      "metadata": {
+        "project_id": "shakedown",
+        "topic": "Should we increase the carbon tax?",
+        "citations": []
+      }
+    },
+    {
+      "session_id": "20251018-073804-should-we-increase-the-carbon-tax",
+      "type": "consensus",
+      "agent": null,
+      "text": "No consensus reached - no responses.",
+      "metadata": {
+        "project_id": "shakedown",
+        "topic": "Should we increase the carbon tax?"
+      }
+    },
+    {
+      "session_id": "20251018-073804-should-we-increase-the-carbon-tax",
+      "type": "retrieval",
+      "agent": null,
+      "text": "Carbon tax policy briefing Key findings: - Incremental increases of $5 per ton maintain competitiveness. - Revenue recycling funds community solar programs. - Recent market report (April 2025) notes a 12% rise in clean-tech jobs when carbon pricing is paired with rebates. Implementation notes: - Coordinate with finance ministry for dividend schedule. - Monitor global commodity prices quarterly.",
+      "metadata": {
+        "doc_id": "shakedown-policy-20251018073743",
+        "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+        "score": 0.18257418583505536,
+        "label": "Doc 1",
+        "title": "shakedown-policy",
+        "tags": [
+          "policy",
+          "2025"
+        ],
+        "source_path": "/home/john/argentum/shakedown-policy.md",
+        "ingested_at": "2025-10-18T07:37:43.342317+00:00"
+      }
+    }
+  ]
+}

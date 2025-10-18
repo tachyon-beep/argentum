@@ -1,13 +1,20 @@
 """Virtual CTO advisory panel scenario."""
 
 import asyncio
+from typing import TYPE_CHECKING, Any
 
 from argentum.agents.base import AgentConfig
 from argentum.agents.llm_agent import LLMAgent
 from argentum.coordination.chat_manager import ChatManager
 from argentum.llm.provider import LLMProvider, OpenAIProvider
-from argentum.models import OrchestrationResult, Role
+from argentum.memory.agent_memory import AgentMemoryStore
+from argentum.models import OrchestrationResult, Role, Task
 from argentum.orchestration.group_chat import GroupChatOrchestrator
+from argentum.workspace.profiles import apply_speech_defaults, load_agent_profile
+
+if TYPE_CHECKING:  # pragma: no cover - type checking only
+    from argentum.workspace.knowledge import SessionRetriever
+    from argentum.workspace.manager import ProjectWorkspace
 
 
 class CTOAdvisoryPanel:
@@ -19,6 +26,10 @@ class CTOAdvisoryPanel:
         advisors: list[str] | None = None,
         rounds: int = 3,
         provider: LLMProvider | None = None,
+        memory_store: AgentMemoryStore | None = None,
+        workspace: "ProjectWorkspace | None" = None,
+        context_documents: list[dict[str, Any]] | None = None,
+        retriever: "SessionRetriever | None" = None,
     ):
         """Initialize the CTO advisory panel.
 
@@ -31,6 +42,11 @@ class CTOAdvisoryPanel:
         self.question = question
         self.rounds = rounds
         self.provider = provider or OpenAIProvider()
+        self.memory_store = memory_store
+        self.workspace = workspace
+        self.context_documents = context_documents if context_documents is not None else []
+        self.retriever = retriever
+        self.manifest = workspace.load_manifest() if workspace else None
 
         # Default advisors if not specified
         if advisors is None:
@@ -94,9 +110,21 @@ class CTOAdvisoryPanel:
                 model="gpt-4",
                 temperature=0.7,
                 max_tokens=400,
+                metadata={"slug": advisor_key},
             )
 
-            agent = LLMAgent(config=config, provider=self.provider)
+            config = apply_speech_defaults(config, self.manifest, advisor_key)
+            config = load_agent_profile(self.workspace, advisor_key, config)
+
+            if self.memory_store:
+                agent = LLMAgent(
+                    config=config,
+                    provider=self.provider,
+                    memory_store=self.memory_store,
+                    retriever=self.retriever,
+                )
+            else:
+                agent = LLMAgent(config=config, provider=self.provider, retriever=self.retriever)
             agents.append(agent)
 
         return agents
@@ -123,19 +151,30 @@ class CTOAdvisoryPanel:
         task_description = f"""
 CTO Question: {self.question}
 
-Instructions: Each advisor should:
+        Instructions: Each advisor should:
 1. Provide analysis from your domain expertise
 2. Identify key risks, benefits, or considerations
 3. Build on or respond to points raised by other advisors
 4. Be specific with recommendations
 5. Help the CTO make an informed decision
+6. If you need additional evidence, reply with <<retrieve: your search terms>> and pause for the new documents before replying fully.
 
 Let's begin the consultation.
         """.strip()
 
+        task = Task(
+            description=task_description,
+            context={
+                "question": self.question,
+                "memory_topic": self.question,
+                "knowledge_documents": self.context_documents,
+                "retrieval_history": self.retriever.history if self.retriever else [],
+            },
+        )
+
         return await orchestrator.execute(
             agents=self.agents,
-            task=task_description,
+            task=task,
         )
 
 

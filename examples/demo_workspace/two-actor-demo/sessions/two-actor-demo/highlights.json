@@ -1,0 +1,345 @@
+{
+  "session_id": "two-actor-demo",
+  "command": "demo",
+  "consensus": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging.",
+  "topic": "Should we increase the carbon tax this quarter?",
+  "project_id": "two-actor-demo",
+  "agents": [
+    "Minister of Finance",
+    "Minister of Environment"
+  ],
+  "quotes": [
+    {
+      "agent": "Minister of Finance",
+      "content": "Building on [Doc 1], we should move in $5 increments so the dividend cycle and community solar funds stay balanced.",
+      "confidence": null,
+      "metadata": {
+        "model": "scripted-finance",
+        "temperature": 0.0,
+        "role": "advisor",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "carbon-briefing-20251018081947",
+            "chunk_id": "carbon-briefing-20251018081947::chunk-1",
+            "title": "carbon-briefing",
+            "score": 0.2785430072655778,
+            "position": 1,
+            "tags": [
+              "policy",
+              "demo"
+            ],
+            "source_path": "/home/john/argentum/examples/demo_workspace/two-actor-demo/docs/carbon-briefing.md",
+            "ingested_at": "2025-10-18T08:19:47.465844+00:00"
+          }
+        ],
+        "retrieval_events": [
+          {
+            "query": "carbon dividend market data",
+            "labels": [
+              "Doc 1"
+            ],
+            "count": 1
+          }
+        ],
+        "speaking_style": "boardroom",
+        "speech_tags": [
+          "measured",
+          "formal"
+        ],
+        "tts_voice": "boardroom_male"
+      }
+    },
+    {
+      "agent": "Minister of Environment",
+      "content": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging.",
+      "confidence": null,
+      "metadata": {
+        "model": "scripted-environment",
+        "temperature": 0.0,
+        "role": "advisor",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "carbon-briefing-20251018081947",
+            "chunk_id": "carbon-briefing-20251018081947::chunk-1",
+            "title": "carbon-briefing",
+            "score": 0.2785430072655778,
+            "position": 1,
+            "tags": [
+              "policy",
+              "demo"
+            ],
+            "source_path": "/home/john/argentum/examples/demo_workspace/two-actor-demo/docs/carbon-briefing.md",
+            "ingested_at": "2025-10-18T08:19:47.465844+00:00"
+          }
+        ],
+        "speaking_style": "podcast",
+        "speech_tags": [
+          "warm",
+          "optimistic"
+        ],
+        "tts_voice": "podcast_female"
+      }
+    }
+  ],
+  "timestamp": "2025-10-18T08:19:47.467607+00:00",
+  "summary": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging. (2 agents contributed; 2 notable statements)\nSources: Doc 1",
+  "action_items": [
+    {
+      "agent": "Minister of Finance",
+      "text": "Building on [Doc 1], we should move in $5 increments so the dividend cycle and community solar funds stay balanced.",
+      "source": "statement"
+    },
+    {
+      "agent": "Minister of Environment",
+      "text": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging.",
+      "source": "statement"
+    },
+    {
+      "agent": null,
+      "text": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging.",
+      "source": "consensus"
+    }
+  ],
+  "retrieved_docs": [
+    {
+      "doc_id": "carbon-briefing-20251018081947",
+      "chunk_id": "carbon-briefing-20251018081947::chunk-1",
+      "text": "Carbon Pricing Briefing - Incremental increases of $5 per ton keep exporters competitive. - Recycling revenue into community solar programmes builds durable support. - 2025 market survey: clean-tech employment rose 12% alongside dividend rebates.",
+      "score": 0.2785430072655778,
+      "metadata": {
+        "chunk": {
+          "position": 1
+        },
+        "document": {
+          "title": "carbon-briefing",
+          "tags": [
+            "policy",
+            "demo"
+          ],
+          "label": "Doc 1"
+        },
+        "source_path": "/home/john/argentum/examples/demo_workspace/two-actor-demo/docs/carbon-briefing.md",
+        "title": "carbon-briefing",
+        "tags": [
+          "policy",
+          "demo"
+        ],
+        "ingested_at": "2025-10-18T08:19:47.465844+00:00",
+        "chunk_size": 200,
+        "overlap": 40
+      },
+      "label": "Doc 1"
+    }
+  ],
+  "citations": [
+    {
+      "label": "Doc 1",
+      "doc_id": "carbon-briefing-20251018081947",
+      "chunk_id": "carbon-briefing-20251018081947::chunk-1",
+      "title": "carbon-briefing",
+      "score": 0.2785430072655778,
+      "position": 1,
+      "tags": [
+        "policy",
+        "demo"
+      ],
+      "source_path": "/home/john/argentum/examples/demo_workspace/two-actor-demo/docs/carbon-briefing.md",
+      "ingested_at": "2025-10-18T08:19:47.465844+00:00"
+    }
+  ],
+  "speaking_styles": {
+    "Minister of Finance": {
+      "speaking_style": "boardroom",
+      "speech_tags": [
+        "measured",
+        "formal"
+      ],
+      "tts_voice": "boardroom_male"
+    },
+    "Minister of Environment": {
+      "speaking_style": "podcast",
+      "speech_tags": [
+        "warm",
+        "optimistic"
+      ],
+      "tts_voice": "podcast_female"
+    }
+  },
+  "retrieval_history": [
+    {
+      "query": "carbon dividend market data",
+      "labels": [
+        "Doc 1"
+      ],
+      "count": 1
+    }
+  ],
+  "items": [
+    {
+      "session_id": "two-actor-demo",
+      "type": "summary",
+      "agent": null,
+      "text": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging. (2 agents contributed; 2 notable statements)\nSources: Doc 1",
+      "metadata": {
+        "project_id": "two-actor-demo",
+        "topic": "Should we increase the carbon tax this quarter?",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "carbon-briefing-20251018081947",
+            "chunk_id": "carbon-briefing-20251018081947::chunk-1",
+            "title": "carbon-briefing",
+            "score": 0.2785430072655778,
+            "position": 1,
+            "tags": [
+              "policy",
+              "demo"
+            ],
+            "source_path": "/home/john/argentum/examples/demo_workspace/two-actor-demo/docs/carbon-briefing.md",
+            "ingested_at": "2025-10-18T08:19:47.465844+00:00"
+          }
+        ],
+        "speaking_style": "boardroom",
+        "tts_voice": "boardroom_male"
+      }
+    },
+    {
+      "session_id": "two-actor-demo",
+      "type": "consensus",
+      "agent": null,
+      "text": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging.",
+      "metadata": {
+        "project_id": "two-actor-demo",
+        "topic": "Should we increase the carbon tax this quarter?"
+      }
+    },
+    {
+      "session_id": "two-actor-demo",
+      "type": "statement",
+      "agent": "Minister of Finance",
+      "text": "Building on [Doc 1], we should move in $5 increments so the dividend cycle and community solar funds stay balanced.",
+      "metadata": {
+        "confidence": null,
+        "project_id": "two-actor-demo",
+        "topic": "Should we increase the carbon tax this quarter?",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "carbon-briefing-20251018081947",
+            "chunk_id": "carbon-briefing-20251018081947::chunk-1",
+            "title": "carbon-briefing",
+            "score": 0.2785430072655778,
+            "position": 1,
+            "tags": [
+              "policy",
+              "demo"
+            ],
+            "source_path": "/home/john/argentum/examples/demo_workspace/two-actor-demo/docs/carbon-briefing.md",
+            "ingested_at": "2025-10-18T08:19:47.465844+00:00"
+          }
+        ],
+        "speaking_style": "boardroom",
+        "speech_tags": [
+          "measured",
+          "formal"
+        ],
+        "tts_voice": "boardroom_male"
+      }
+    },
+    {
+      "session_id": "two-actor-demo",
+      "type": "statement",
+      "agent": "Minister of Environment",
+      "text": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging.",
+      "metadata": {
+        "confidence": null,
+        "project_id": "two-actor-demo",
+        "topic": "Should we increase the carbon tax this quarter?",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "carbon-briefing-20251018081947",
+            "chunk_id": "carbon-briefing-20251018081947::chunk-1",
+            "title": "carbon-briefing",
+            "score": 0.2785430072655778,
+            "position": 1,
+            "tags": [
+              "policy",
+              "demo"
+            ],
+            "source_path": "/home/john/argentum/examples/demo_workspace/two-actor-demo/docs/carbon-briefing.md",
+            "ingested_at": "2025-10-18T08:19:47.465844+00:00"
+          }
+        ],
+        "speaking_style": "podcast",
+        "speech_tags": [
+          "warm",
+          "optimistic"
+        ],
+        "tts_voice": "podcast_female"
+      }
+    },
+    {
+      "session_id": "two-actor-demo",
+      "type": "action",
+      "agent": "Minister of Finance",
+      "text": "Building on [Doc 1], we should move in $5 increments so the dividend cycle and community solar funds stay balanced.",
+      "metadata": {
+        "project_id": "two-actor-demo",
+        "topic": "Should we increase the carbon tax this quarter?",
+        "source": "statement",
+        "speaking_style": "boardroom",
+        "tts_voice": "boardroom_male"
+      }
+    },
+    {
+      "session_id": "two-actor-demo",
+      "type": "action",
+      "agent": "Minister of Environment",
+      "text": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging.",
+      "metadata": {
+        "project_id": "two-actor-demo",
+        "topic": "Should we increase the carbon tax this quarter?",
+        "source": "statement",
+        "speaking_style": "boardroom",
+        "tts_voice": "boardroom_male"
+      }
+    },
+    {
+      "session_id": "two-actor-demo",
+      "type": "action",
+      "agent": null,
+      "text": "[Doc 1] shows clean-tech jobs jumped 12% when rebates accompanied pricing, so let's pair the increase with community investment messaging.",
+      "metadata": {
+        "project_id": "two-actor-demo",
+        "topic": "Should we increase the carbon tax this quarter?",
+        "source": "consensus",
+        "speaking_style": "boardroom",
+        "tts_voice": "boardroom_male"
+      }
+    },
+    {
+      "session_id": "two-actor-demo",
+      "type": "retrieval",
+      "agent": null,
+      "text": "Carbon Pricing Briefing - Incremental increases of $5 per ton keep exporters competitive. - Recycling revenue into community solar programmes builds durable support. - 2025 market survey: clean-tech employment rose 12% alongside dividend rebates.",
+      "metadata": {
+        "doc_id": "carbon-briefing-20251018081947",
+        "chunk_id": "carbon-briefing-20251018081947::chunk-1",
+        "score": 0.2785430072655778,
+        "label": "Doc 1",
+        "title": "carbon-briefing",
+        "tags": [
+          "policy",
+          "demo"
+        ],
+        "source_path": "/home/john/argentum/examples/demo_workspace/two-actor-demo/docs/carbon-briefing.md",
+        "ingested_at": "2025-10-18T08:19:47.465844+00:00"
+      }
+    }
+  ],
+  "session_style": "boardroom",
+  "default_tts_voice": "boardroom_male"
+}

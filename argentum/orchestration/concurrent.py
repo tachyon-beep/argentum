@@ -77,11 +77,15 @@ class ConcurrentOrchestrator(Orchestrator):
             agent_response: AgentResponse = response  # type: ignore[assignment]
 
             # Add agent's response to context
+            metadata = {"agent_role": agent.role.value}
+            if isinstance(agent_response.metadata, dict):
+                metadata.update(agent_response.metadata)
+
             agent_message = Message(
                 type=MessageType.ASSISTANT,
                 sender=agent.name,
                 content=agent_response.content,
-                metadata={"agent_role": agent.role.value},
+                metadata=metadata,
             )
             ctx.add_message(agent_message)
 

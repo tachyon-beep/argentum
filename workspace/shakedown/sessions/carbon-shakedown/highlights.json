@@ -1,0 +1,235 @@
+{
+  "session_id": "carbon-shakedown",
+  "command": "debate",
+  "consensus": "Debate concluded with 2 contributions. Final perspective: LLM output unavailable (missing OPENAI_API_KEY).",
+  "topic": "Should we increase the carbon tax?",
+  "project_id": "shakedown",
+  "agents": [
+    "Minister of Finance",
+    "Minister of Environment"
+  ],
+  "quotes": [
+    {
+      "agent": "Minister of Finance",
+      "content": "LLM output unavailable (missing OPENAI_API_KEY).",
+      "confidence": null,
+      "metadata": {
+        "model": "gpt-4",
+        "temperature": 0.7,
+        "role": "advisor",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "shakedown-policy-20251018073743",
+            "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+            "title": "shakedown-policy",
+            "score": 0.18257418583505536,
+            "position": 1,
+            "tags": [
+              "policy",
+              "2025"
+            ],
+            "source_path": "/home/john/argentum/shakedown-policy.md",
+            "ingested_at": "2025-10-18T07:37:43.342317+00:00"
+          }
+        ]
+      }
+    },
+    {
+      "agent": "Minister of Environment",
+      "content": "LLM output unavailable (missing OPENAI_API_KEY).",
+      "confidence": null,
+      "metadata": {
+        "model": "gpt-4",
+        "temperature": 0.7,
+        "role": "advisor",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "shakedown-policy-20251018073743",
+            "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+            "title": "shakedown-policy",
+            "score": 0.18257418583505536,
+            "position": 1,
+            "tags": [
+              "policy",
+              "2025"
+            ],
+            "source_path": "/home/john/argentum/shakedown-policy.md",
+            "ingested_at": "2025-10-18T07:37:43.342317+00:00"
+          }
+        ]
+      }
+    }
+  ],
+  "timestamp": "2025-10-18T07:38:24.045660+00:00",
+  "summary": "Debate concluded with 2 contributions. Final perspective: LLM output unavailable (missing OPENAI_API_KEY).\nSources: Doc 1",
+  "action_items": [],
+  "retrieved_docs": [
+    {
+      "doc_id": "shakedown-policy-20251018073743",
+      "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+      "text": "Carbon tax policy briefing Key findings: - Incremental increases of $5 per ton maintain competitiveness. - Revenue recycling funds community solar programs. - Recent market report (April 2025) notes a 12% rise in clean-tech jobs when carbon pricing is paired with rebates. Implementation notes: - Coordinate with finance ministry for dividend schedule. - Monitor global commodity prices quarterly.",
+      "score": 0.18257418583505536,
+      "metadata": {
+        "chunk": {
+          "position": 1
+        },
+        "document": {
+          "title": "shakedown-policy",
+          "tags": [
+            "policy",
+            "2025"
+          ],
+          "label": "Doc 1"
+        },
+        "source_path": "/home/john/argentum/shakedown-policy.md",
+        "title": "shakedown-policy",
+        "tags": [
+          "policy",
+          "2025"
+        ],
+        "ingested_at": "2025-10-18T07:37:43.342317+00:00",
+        "chunk_size": 200,
+        "overlap": 40
+      },
+      "label": "Doc 1"
+    }
+  ],
+  "citations": [
+    {
+      "label": "Doc 1",
+      "doc_id": "shakedown-policy-20251018073743",
+      "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+      "title": "shakedown-policy",
+      "score": 0.18257418583505536,
+      "position": 1,
+      "tags": [
+        "policy",
+        "2025"
+      ],
+      "source_path": "/home/john/argentum/shakedown-policy.md",
+      "ingested_at": "2025-10-18T07:37:43.342317+00:00"
+    }
+  ],
+  "retrieval_history": [
+    {
+      "query": "Should we increase the carbon tax?",
+      "labels": [
+        "Doc 1"
+      ],
+      "count": 1
+    }
+  ],
+  "items": [
+    {
+      "session_id": "carbon-shakedown",
+      "type": "summary",
+      "agent": null,
+      "text": "Debate concluded with 2 contributions. Final perspective: LLM output unavailable (missing OPENAI_API_KEY).\nSources: Doc 1",
+      "metadata": {
+        "project_id": "shakedown",
+        "topic": "Should we increase the carbon tax?",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "shakedown-policy-20251018073743",
+            "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+            "title": "shakedown-policy",
+            "score": 0.18257418583505536,
+            "position": 1,
+            "tags": [
+              "policy",
+              "2025"
+            ],
+            "source_path": "/home/john/argentum/shakedown-policy.md",
+            "ingested_at": "2025-10-18T07:37:43.342317+00:00"
+          }
+        ]
+      }
+    },
+    {
+      "session_id": "carbon-shakedown",
+      "type": "consensus",
+      "agent": null,
+      "text": "Debate concluded with 2 contributions. Final perspective: LLM output unavailable (missing OPENAI_API_KEY).",
+      "metadata": {
+        "project_id": "shakedown",
+        "topic": "Should we increase the carbon tax?"
+      }
+    },
+    {
+      "session_id": "carbon-shakedown",
+      "type": "statement",
+      "agent": "Minister of Finance",
+      "text": "LLM output unavailable (missing OPENAI_API_KEY).",
+      "metadata": {
+        "confidence": null,
+        "project_id": "shakedown",
+        "topic": "Should we increase the carbon tax?",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "shakedown-policy-20251018073743",
+            "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+            "title": "shakedown-policy",
+            "score": 0.18257418583505536,
+            "position": 1,
+            "tags": [
+              "policy",
+              "2025"
+            ],
+            "source_path": "/home/john/argentum/shakedown-policy.md",
+            "ingested_at": "2025-10-18T07:37:43.342317+00:00"
+          }
+        ]
+      }
+    },
+    {
+      "session_id": "carbon-shakedown",
+      "type": "statement",
+      "agent": "Minister of Environment",
+      "text": "LLM output unavailable (missing OPENAI_API_KEY).",
+      "metadata": {
+        "confidence": null,
+        "project_id": "shakedown",
+        "topic": "Should we increase the carbon tax?",
+        "citations": [
+          {
+            "label": "Doc 1",
+            "doc_id": "shakedown-policy-20251018073743",
+            "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+            "title": "shakedown-policy",
+            "score": 0.18257418583505536,
+            "position": 1,
+            "tags": [
+              "policy",
+              "2025"
+            ],
+            "source_path": "/home/john/argentum/shakedown-policy.md",
+            "ingested_at": "2025-10-18T07:37:43.342317+00:00"
+          }
+        ]
+      }
+    },
+    {
+      "session_id": "carbon-shakedown",
+      "type": "retrieval",
+      "agent": null,
+      "text": "Carbon tax policy briefing Key findings: - Incremental increases of $5 per ton maintain competitiveness. - Revenue recycling funds community solar programs. - Recent market report (April 2025) notes a 12% rise in clean-tech jobs when carbon pricing is paired with rebates. Implementation notes: - Coordinate with finance ministry for dividend schedule. - Monitor global commodity prices quarterly.",
+      "metadata": {
+        "doc_id": "shakedown-policy-20251018073743",
+        "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+        "score": 0.18257418583505536,
+        "label": "Doc 1",
+        "title": "shakedown-policy",
+        "tags": [
+          "policy",
+          "2025"
+        ],
+        "source_path": "/home/john/argentum/shakedown-policy.md",
+        "ingested_at": "2025-10-18T07:37:43.342317+00:00"
+      }
+    }
+  ]
+}

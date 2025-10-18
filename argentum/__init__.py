@@ -15,6 +15,8 @@ from argentum.memory.context import Context, Message
 from argentum.orchestration.concurrent import ConcurrentOrchestrator
 from argentum.orchestration.group_chat import GroupChatOrchestrator
 from argentum.orchestration.sequential import SequentialOrchestrator
+from argentum.persistence import ConversationSession, JSONFileStore
+from argentum.workspace import ProjectWorkspace, WorkspaceManager, get_default_workspace_root
 
 __all__ = [
     "Agent",
@@ -22,8 +24,13 @@ __all__ = [
     "ChatManager",
     "ConcurrentOrchestrator",
     "Context",
+    "ConversationSession",
     "GroupChatOrchestrator",
+    "JSONFileStore",
     "LLMProvider",
     "Message",
+    "ProjectWorkspace",
     "SequentialOrchestrator",
+    "WorkspaceManager",
+    "get_default_workspace_root",
 ]

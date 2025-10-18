@@ -84,14 +84,18 @@ class GroupChatOrchestrator(Orchestrator):
                 )
 
                 # Add to context
+                metadata = {
+                    "agent_role": next_speaker.role.value,
+                    "turn": self.chat_manager.get_turn_count() + 1,
+                }
+                if isinstance(response.metadata, dict):
+                    metadata.update(response.metadata)
+
                 agent_message = Message(
                     type=MessageType.ASSISTANT,
                     sender=next_speaker.name,
                     content=response.content,
-                    metadata={
-                        "agent_role": next_speaker.role.value,
-                        "turn": self.chat_manager.get_turn_count() + 1,
-                    },
+                    metadata=metadata,
                 )
                 ctx.add_message(agent_message)
 

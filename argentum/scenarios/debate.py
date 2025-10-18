@@ -1,13 +1,22 @@
 """Government minister debate scenario."""
 
 import asyncio
+from typing import TYPE_CHECKING, Any
 
 from argentum.agents.base import AgentConfig
 from argentum.agents.llm_agent import LLMAgent
 from argentum.coordination.chat_manager import ChatManager
 from argentum.llm.provider import LLMProvider, OpenAIProvider
-from argentum.models import OrchestrationResult, Role
+from argentum.memory.agent_memory import AgentMemoryStore
+from argentum.models import OrchestrationResult, Role, Task
 from argentum.orchestration.group_chat import GroupChatOrchestrator
+from argentum.workspace.profiles import apply_speech_defaults, load_agent_profile
+
+if TYPE_CHECKING:  # pragma: no cover - imported for type checking only
+    from argentum.workspace.knowledge import SessionRetriever
+
+if TYPE_CHECKING:  # pragma: no cover - imported for type checking only
+    from argentum.workspace.manager import ProjectWorkspace
 
 
 class GovernmentDebate:
@@ -19,6 +28,10 @@ class GovernmentDebate:
         ministers: list[str] | None = None,
         rounds: int = 5,
         provider: LLMProvider | None = None,
+        memory_store: AgentMemoryStore | None = None,
+        workspace: "ProjectWorkspace | None" = None,
+        context_documents: list[dict[str, Any]] | None = None,
+        retriever: "SessionRetriever | None" = None,
     ):
         """Initialize the government debate.
 
@@ -31,6 +44,11 @@ class GovernmentDebate:
         self.topic = topic
         self.rounds = rounds
         self.provider = provider or OpenAIProvider()
+        self.memory_store = memory_store
+        self.workspace = workspace
+        self.context_documents = context_documents if context_documents is not None else []
+        self.retriever = retriever
+        self.manifest = workspace.load_manifest() if workspace else None
 
         # Default ministers if not specified
         if ministers is None:
@@ -91,9 +109,21 @@ class GovernmentDebate:
                 model="gpt-4",
                 temperature=0.7,
                 max_tokens=500,
+                metadata={"slug": minister_key},
             )
 
-            agent = LLMAgent(config=config, provider=self.provider)
+            config = apply_speech_defaults(config, self.manifest, minister_key)
+            config = load_agent_profile(self.workspace, minister_key, config)
+
+            if self.memory_store:
+                agent = LLMAgent(
+                    config=config,
+                    provider=self.provider,
+                    memory_store=self.memory_store,
+                    retriever=self.retriever,
+                )
+            else:
+                agent = LLMAgent(config=config, provider=self.provider, retriever=self.retriever)
             agents.append(agent)
 
         return agents
@@ -120,19 +150,30 @@ class GovernmentDebate:
         task_description = f"""
 Policy Debate Topic: {self.topic}
 
-Instructions: Each minister should:
+        Instructions: Each minister should:
 1. Present their department's perspective on this policy
 2. Consider both benefits and concerns from your area
 3. Cite specific impacts and considerations
 4. Respond to points raised by other ministers
 5. Work towards finding common ground or identifying key trade-offs
+6. If you need additional information, reply with <<retrieve: your search terms>> and wait for the retrieved documents before finalising your answer.
 
 Let's begin the debate.
         """.strip()
 
+        task = Task(
+            description=task_description,
+            context={
+                "topic": self.topic,
+                "memory_topic": self.topic,
+                "knowledge_documents": self.context_documents,
+                "retrieval_history": self.retriever.history if self.retriever else [],
+            },
+        )
+
         return await orchestrator.execute(
             agents=self.agents,
-            task=task_description,
+            task=task,
         )
 
 

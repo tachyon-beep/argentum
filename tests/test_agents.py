@@ -5,6 +5,7 @@ from conftest import MockLLMProvider
 
 from argentum.agents.base import AgentConfig
 from argentum.agents.llm_agent import LLMAgent
+from argentum.memory.agent_memory import AgentMemoryStore
 from argentum.models import Message, MessageType, Role
 
 
@@ -158,3 +159,38 @@ class TestLLMAgent:
         repr_str = repr(agent)
         assert "Test Agent" in repr_str
         assert agent_config.role.value in repr_str
+
+    @pytest.mark.asyncio
+    async def test_agent_memory_integration(self, agent_config, tmp_path):
+        """LLM agent should include and persist memory when store is provided."""
+
+        class RecordingProvider(MockLLMProvider):
+            def __init__(self, response: str) -> None:
+                super().__init__(response=response)
+                self.last_messages = None
+
+            async def generate(self, messages, _temperature=0.7, _max_tokens=1000, **kwargs):
+                self.last_messages = messages
+                return await super().generate(messages, _temperature=_temperature, _max_tokens=_max_tokens, **kwargs)
+
+        memory_dir = tmp_path / "memory"
+        store = AgentMemoryStore(base_path=memory_dir)
+        store.record_statement("Test Agent", "I previously advocated for budget cuts.", topic="budget")
+
+        provider = RecordingProvider(response="New fiscal outlook.")
+        agent = LLMAgent(config=agent_config, provider=provider, memory_store=store)
+
+        messages = [Message(type=MessageType.USER, sender="host", content="What is your take?")]
+        context = {"topic": "budget"}
+
+        response = await agent.generate_response(messages, context=context)
+
+        assert response.content == "New fiscal outlook."
+        assert provider.last_messages is not None
+        system_message = provider.last_messages[0]
+        assert system_message["role"] == "system"
+        assert "previously stated" in system_message["content"].lower()
+
+        memory = store.get_memory("Test Agent")
+        recent = memory.recent_entries(limit=2, topic="budget")
+        assert any(entry.content == "New fiscal outlook." for entry in recent)

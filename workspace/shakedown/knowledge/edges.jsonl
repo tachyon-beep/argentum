@@ -1,0 +1,15 @@
+{"source": "session:shakedown:20251018-073804-should-we-increase-the-carbon-tax", "target": "topic:shakedown:should-we-increase-the-carbon-tax", "type": "DISCUSSED_TOPIC", "attributes": {}, "timestamp": "2025-10-18T07:38:04.056526+00:00"}
+{"source": "session:shakedown:carbon-shakedown", "target": "topic:shakedown:should-we-increase-the-carbon-tax", "type": "DISCUSSED_TOPIC", "attributes": {}, "timestamp": "2025-10-18T07:38:24.046188+00:00"}
+{"source": "agent:shakedown:minister-of-finance", "target": "session:shakedown:carbon-shakedown", "type": "PARTICIPATED_IN", "attributes": {}, "timestamp": "2025-10-18T07:38:24.046191+00:00"}
+{"source": "agent:shakedown:minister-of-environment", "target": "session:shakedown:carbon-shakedown", "type": "PARTICIPATED_IN", "attributes": {}, "timestamp": "2025-10-18T07:38:24.046193+00:00"}
+{"source": "statement:carbon-shakedown:1", "target": "session:shakedown:carbon-shakedown", "type": "REFERENCES_SESSION", "attributes": {}, "timestamp": "2025-10-18T07:38:24.046195+00:00"}
+{"source": "agent:shakedown:minister-of-finance", "target": "statement:carbon-shakedown:1", "type": "STATED", "attributes": {}, "timestamp": "2025-10-18T07:38:24.046196+00:00"}
+{"source": "statement:carbon-shakedown:2", "target": "session:shakedown:carbon-shakedown", "type": "REFERENCES_SESSION", "attributes": {}, "timestamp": "2025-10-18T07:38:24.046197+00:00"}
+{"source": "agent:shakedown:minister-of-environment", "target": "statement:carbon-shakedown:2", "type": "STATED", "attributes": {}, "timestamp": "2025-10-18T07:38:24.046198+00:00"}
+{"source": "session:shakedown:carbon-shakedown2", "target": "topic:shakedown:should-we-increase-the-carbon-tax", "type": "DISCUSSED_TOPIC", "attributes": {}, "timestamp": "2025-10-18T07:48:26.967534+00:00"}
+{"source": "agent:shakedown:minister-of-finance", "target": "session:shakedown:carbon-shakedown2", "type": "PARTICIPATED_IN", "attributes": {}, "timestamp": "2025-10-18T07:48:26.967539+00:00"}
+{"source": "agent:shakedown:minister-of-environment", "target": "session:shakedown:carbon-shakedown2", "type": "PARTICIPATED_IN", "attributes": {}, "timestamp": "2025-10-18T07:48:26.967541+00:00"}
+{"source": "statement:carbon-shakedown2:1", "target": "session:shakedown:carbon-shakedown2", "type": "REFERENCES_SESSION", "attributes": {}, "timestamp": "2025-10-18T07:48:26.967543+00:00"}
+{"source": "agent:shakedown:minister-of-finance", "target": "statement:carbon-shakedown2:1", "type": "STATED", "attributes": {}, "timestamp": "2025-10-18T07:48:26.967545+00:00"}
+{"source": "statement:carbon-shakedown2:2", "target": "session:shakedown:carbon-shakedown2", "type": "REFERENCES_SESSION", "attributes": {}, "timestamp": "2025-10-18T07:48:26.967547+00:00"}
+{"source": "agent:shakedown:minister-of-environment", "target": "statement:carbon-shakedown2:2", "type": "STATED", "attributes": {}, "timestamp": "2025-10-18T07:48:26.967548+00:00"}

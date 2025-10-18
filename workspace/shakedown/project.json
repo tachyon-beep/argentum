@@ -1,0 +1,28 @@
+{
+  "project_id": "shakedown",
+  "display_name": "Shakedown Workspace",
+  "description": "",
+  "created_at": "2025-10-18T07:37:31.011712+00:00",
+  "updated_at": "2025-10-18T07:37:31.011712+00:00",
+  "default_agents": [],
+  "summary": {
+    "mode": "heuristic",
+    "command": null
+  },
+  "storage": {
+    "base_path": "/home/john/argentum/workspace/shakedown",
+    "vector_store": null,
+    "archive_format": "zip"
+  },
+  "retrieval": {
+    "enabled": true,
+    "limit": 3,
+    "min_score": 0.0,
+    "prefetch": true
+  },
+  "retention": {
+    "hot_context_turns": 12,
+    "warm_window_days": 120,
+    "archive_after_days": 365
+  }
+}

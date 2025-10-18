@@ -65,15 +65,19 @@ class SequentialOrchestrator(Orchestrator):
             )
 
             # Add agent's response to context
+            metadata = {
+                "agent_role": agent.role.value,
+                "stage": i + 1,
+                "total_stages": len(agents),
+            }
+            if isinstance(response.metadata, dict):
+                metadata.update(response.metadata)
+
             agent_message = Message(
                 type=MessageType.ASSISTANT,
                 sender=agent.name,
                 content=response.content,
-                metadata={
-                    "agent_role": agent.role.value,
-                    "stage": i + 1,
-                    "total_stages": len(agents),
-                },
+                metadata=metadata,
             )
             ctx.add_message(agent_message)
 

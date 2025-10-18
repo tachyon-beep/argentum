@@ -1,0 +1,95 @@
+{
+  "session_id": "20251018-073804-should-we-increase-the-carbon-tax",
+  "metadata": {
+    "command": "debate",
+    "session_id": "20251018-073804-should-we-increase-the-carbon-tax",
+    "project_id": "shakedown",
+    "project_display_name": "Shakedown Workspace",
+    "retrieval": {
+      "enabled": true,
+      "prefetch": true,
+      "limit": 3,
+      "min_score": 0.0,
+      "query": "Should we increase the carbon tax?",
+      "hit_count": 1
+    },
+    "retrieved_docs": [
+      {
+        "doc_id": "shakedown-policy-20251018073743",
+        "chunk_id": "shakedown-policy-20251018073743::chunk-1",
+        "text": "Carbon tax policy briefing Key findings: - Incremental increases of $5 per ton maintain competitiveness. - Revenue recycling funds community solar programs. - Recent market report (April 2025) notes a 12% rise in clean-tech jobs when carbon pricing is paired with rebates. Implementation notes: - Coordinate with finance ministry for dividend schedule. - Monitor global commodity prices quarterly.",
+        "score": 0.18257418583505536,
+        "metadata": {
+          "chunk": {
+            "position": 1
+          },
+          "document": {
+            "title": "shakedown-policy",
+            "tags": [
+              "policy",
+              "2025"
+            ],
+            "label": "Doc 1"
+          },
+          "source_path": "/home/john/argentum/shakedown-policy.md",
+          "title": "shakedown-policy",
+          "tags": [
+            "policy",
+            "2025"
+          ],
+          "ingested_at": "2025-10-18T07:37:43.342317+00:00",
+          "chunk_size": 200,
+          "overlap": 40
+        },
+        "label": "Doc 1"
+      }
+    ],
+    "retrieval_history": [
+      {
+        "query": "Should we increase the carbon tax?",
+        "labels": [
+          "Doc 1"
+        ],
+        "count": 1
+      }
+    ],
+    "topic": "Should we increase the carbon tax?",
+    "ministers": [
+      "finance,environment"
+    ],
+    "rounds": 1,
+    "summary_mode": "heuristic"
+  },
+  "created_at": "2025-10-18T07:38:04.051846+00:00",
+  "updated_at": "2025-10-18T07:38:04.054976+00:00",
+  "results": [
+    {
+      "id": "745fb72d-80f4-4140-8ec8-111a43a3b6ef",
+      "pattern": "group_chat",
+      "consensus": "No consensus reached - no responses.",
+      "termination_reason": "max_turns_reached",
+      "duration_seconds": 2.9087066650390625e-05,
+      "metadata": {
+        "num_agents": 0,
+        "agent_names": [],
+        "statistics": {
+          "total_turns": 0,
+          "speaker_counts": {},
+          "unique_speakers": 0,
+          "turns_remaining": 0
+        }
+      },
+      "messages": [
+        {
+          "id": "daf73540-93ef-468d-9388-6986205dc6b2",
+          "type": "user",
+          "sender": "orchestrator",
+          "content": "Policy Debate Topic: Should we increase the carbon tax?\n\n        Instructions: Each minister should:\n1. Present their department's perspective on this policy\n2. Consider both benefits and concerns from your area\n3. Cite specific impacts and considerations\n4. Respond to points raised by other ministers\n5. Work towards finding common ground or identifying key trade-offs\n6. If you need additional information, reply with <<retrieve: your search terms>> and wait for the retrieved documents before finalising your answer.\n\nLet's begin the debate.",
+          "timestamp": "2025-10-18T07:38:04.053799+00:00",
+          "metadata": {}
+        }
+      ],
+      "final_outputs": []
+    }
+  ]
+}
