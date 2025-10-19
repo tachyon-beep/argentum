@@ -22,6 +22,20 @@ Implement the auction-driven, beat-aware multi-agent conversation mode with:
   - Heuristic bidding + pacing multiplier + interrupt budgets
   - Config/CLI flags; metadata IDs; core tests (unit + integration sim)
 
+### WP1 Status (Audio/TTS)
+
+Completed
+- AudioController interface + SimAudioController with estimated beats
+- ElevenLabsAudioController scaffold: mark-driven or estimated beats, ducking lease, crossfade cancellation
+- Beat drift recording (planned vs actual) and first-chunk latency profiling (p95) + guard band computation helper
+- Audio controller factory: selects Sim vs ElevenLabs via manifest/CLI config (offline-safe by default)
+- Tests: marks/finish, ducking no-overlap, crossfade cancellation, estimated-beat drift bounds, p95 and guard-band exposure, factory selection
+
+Remaining (production)
+- Real ElevenLabs streaming adapter integration (networked) and env/manifest wiring for API key, voice, latency
+- Drift and latency stats export to orchestrator for commit_guard_ms tuning
+- Additional race tests (e.g., cancel interjection at exact beat boundary) and mixer polish
+
 - M2 (0.2, 1 sprint):
   - EmotionEngine (LLM mood parsing, EMA smoothing, caps/hysteresis)
   - Evidence-priority lane (discount/tie-break) + reputation updates

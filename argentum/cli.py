@@ -47,6 +47,8 @@ from argentum.workspace.knowledge import (
 )
 from argentum.workspace.summarization import SummaryStrategy, get_summary_strategy
 from argentum.workspace.warm_store import WarmCacheStore
+from argentum.audio.factory import get_audio_controller
+from argentum.audio.controller import AudioController
 
 console = Console()
 
@@ -137,6 +139,7 @@ class SessionEnvironment:
     summary_strategy: SummaryStrategy
     metadata: dict[str, Any]
     retriever: SessionRetriever | None
+    audio_controller: AudioController
 
 
 def _prepare_session_environment(
@@ -226,6 +229,9 @@ def _prepare_session_environment(
         metadata["retrieved_docs"] = retrieved_docs
         metadata["retrieval_history"] = []
 
+    # Build audio controller from manifest (or defaults)
+    audio_ctrl = get_audio_controller(manifest or {})
+
     return SessionEnvironment(
         session_id=final_session_id,
         workspace=workspace,
@@ -236,6 +242,7 @@ def _prepare_session_environment(
         summary_strategy=summary_strategy,
         metadata=metadata,
         retriever=retriever,
+        audio_controller=audio_ctrl,
     )
 
 
