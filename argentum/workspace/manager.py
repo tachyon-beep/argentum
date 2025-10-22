@@ -194,6 +194,14 @@ class WorkspaceManager:
             "created_at": now,
             "updated_at": now,
             "default_agents": [],
+            "conversation": {
+                "auction": {
+                    "emotion_control": "hybrid",
+                    "interjection_min_importance": 0.5,
+                    "tokens": {"max_bank": 8},
+                    "interjections": {"cooldown_segments": 1},
+                }
+            },
             "summary": {
                 "mode": "heuristic",
                 "command": None,

@@ -39,7 +39,7 @@ Remaining (production)
 - M2 (0.2, 1 sprint):
   - EmotionEngine (LLM mood parsing, EMA smoothing, caps/hysteresis)
   - Evidence-priority lane (discount/tie-break) + reputation updates
-  - One-segment reserve + guard band fallback handling; more jitter tests
+  - One-segment reserve + guard band fallback handling (prefetch and reuse in orchestrator); more jitter tests
   - Docs + demo scenario (chaotic_debate)
 
 - M3 (0.2.x–0.3):
@@ -96,6 +96,13 @@ Risks & Mitigation
 ### WP3: Auction Orchestrator
 
 Tasks
+- Micro-turn loop with measured beats and concurrency
+- Interjection planning (typed, importance threshold) with safe duck-play
+- Hard-interrupt cutoff with guard-band commit; provisional+confirmed metadata
+- Reserve prefetch for likely next speaker; reuse next turn if selected; cancellable on context_version change
+- Talk-share tracking and pacing update via resolver.update_pacing()
+- Rich metadata on messages (IDs, timing drift, guard band/p95; auction bids/pacing/talk_share)
+
 - `AuctionGroupChatOrchestrator` micro-turn loop (supports two interrupt modes):
   - Default: hard‑interrupt cutoff (discard current clip; crossfade 200 ms; prebuffer top‑1 kicker).
   - Optional: beat‑only inline acknowledgments via dual-path segments.

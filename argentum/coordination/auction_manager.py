@@ -245,3 +245,154 @@ class EnhancedAuctionResolver:
         pool = evidence_candidates or candidates
         winner = sorted(pool)[0]
         return winner, bool(bids[winner].get("interrupt"))
+
+
+# ------------------------- emotion engine & interjections ---------------------
+
+from dataclasses import dataclass
+
+@dataclass
+class SimpleEmotionEngine:
+    """Emotion engine with EMA smoothing, deadband, hysteresis, and bounded nudges.
+
+    Modes:
+      - heuristic: ignore LLM updates; only event nudges apply
+      - llm: apply LLM updates
+      - hybrid: apply LLM updates with conservative caps
+    """
+
+    state: dict[str, AgentAuctionState]
+    alpha: float = 0.25
+    deadband: float = 0.1
+    nudge_step: float = 0.12
+    mode: str = "hybrid"  # heuristic|llm|hybrid
+    cap_per_turn: float = 0.3  # max absolute change per update
+    min_dwell_turns: int = 2
+    _dwell: dict[str, tuple[int,int]] = field(default_factory=dict)  # agent -> (dir,count)
+
+    def _smooth(self, prev: float, new: float, agent: str, key: str) -> float:
+        if self.mode == "heuristic":
+            return prev
+        if abs(new - prev) < self.deadband:
+            return prev
+        dirn = 1 if new > prev else -1
+        last = self._dwell.get(f"{agent}:{key}")
+        if last is None:
+            self._dwell[f"{agent}:{key}"] = (dirn, 1)
+        else:
+            last_dir, cnt = last
+            if dirn != last_dir and cnt < self.min_dwell_turns:
+                self._dwell[f"{agent}:{key}"] = (last_dir, cnt + 1)
+                return prev
+            self._dwell[f"{agent}:{key}"] = (dirn, 1 if dirn != last_dir else cnt + 1)
+        a = max(0.0, min(1.0, self.alpha))
+        val = (1 - a) * prev + a * new
+        lo, hi = prev - self.cap_per_turn, prev + self.cap_per_turn
+        val = max(lo, min(hi, val))
+        return max(0.0, min(1.0, val))
+
+    def update_from_llm(self, agent: str, payload: dict[str, float]) -> None:
+        if self.mode not in {"hybrid", "llm"}:
+            return
+        st = self.state.setdefault(agent, AgentAuctionState())
+        f = float(payload.get("frustration", st.frustration))
+        e = float(payload.get("engagement", st.engagement))
+        c = float(payload.get("confidence", st.confidence))
+        st.frustration = self._smooth(st.frustration, max(0.0, min(1.0, f)), agent, "frustration")
+        st.engagement = self._smooth(st.engagement, max(0.0, min(1.0, e)), agent, "engagement")
+        st.confidence = self._smooth(st.confidence, max(0.0, min(1.0, c)), agent, "confidence")
+
+    def nudge_from_event(self, agent: str, event: str) -> None:
+        st = self.state.setdefault(agent, AgentAuctionState())
+        d = self.nudge_step
+        if event in {"lost_bid", "was_interrupted"}:
+            st.frustration = max(0.0, min(1.0, st.frustration + d))
+            st.confidence = max(0.0, min(1.0, st.confidence - 0.5 * d))
+        elif event in {"won_bid", "won_interrupt", "spoke_segment"}:
+            st.engagement = max(0.0, min(1.0, st.engagement + 0.5 * d))
+            st.confidence = max(0.0, min(1.0, st.confidence + 0.5 * d))
+
+
+@dataclass
+class BasicInterjectionPlanner:
+
+    """Typed interjection planner with a simple per-segment cooldown.
+
+    Call `start_new_segment()` to advance the segment window and clear cooldowns.
+    The `plan` API returns at most one short interjection for the first eligible
+    agent, with a type hint in the result.
+    """
+
+    cooldown_segments: int = 1
+    _cool: dict[str, int] = field(default_factory=dict)
+
+    def start_new_segment(self) -> None:
+        # Decrease cooldown counters; drop expired entries
+        drop: list[str] = []
+        for k, v in self._cool.items():
+            nv = max(0, v - 1)
+            if nv == 0:
+                drop.append(k)
+            else:
+                self._cool[k] = nv
+        for k in drop:
+            self._cool.pop(k, None)
+
+    async def plan(self, agents: list[str], context: dict[str, Any]) -> list[dict[str, Any]]:
+        for name in agents:
+            if self._cool.get(name):
+                continue
+            # Pick a type based on a hint in context or default to "challenge"
+            itype = (context.get("type") if isinstance(context, dict) else None) or "challenge"
+            text = self._template_for_type(itype)
+            self._cool[name] = max(1, self.cooldown_segments)
+            return [{"agent": name, "type": itype, "text": text, "importance": self._importance(itype)}]
+        return []
+
+    def _template_for_type(self, itype: str) -> str:
+        t = itype.lower()
+        if t == "support":
+            return "Good point. I agree with that."
+        if t == "clarify":
+            return "Can you clarify what you mean?"
+        # default: challenge
+        return "Why do you think that?"
+
+    def _importance(self, itype: str) -> float:
+        t = itype.lower()
+        if t == "support":
+            return 0.4
+        if t == "clarify":
+            return 0.6
+        return 0.8
+
+
+# ------------------------- factory helpers -----------------------------------
+
+def create_default_auction_manager(config: dict[str, Any] | None = None) -> AuctionChatManager:
+    """Factory for AuctionChatManager with simple components.
+
+    Config keys (optional):
+    - emotion_control: "heuristic"|"llm"|"hybrid"
+    - interjections.cooldown_segments: int
+    - tokens.max_bank: int
+    """
+    cfg = config or {}
+    max_bank = int(((cfg.get("tokens") or {}).get("max_bank") or 8))
+    cooldown = int(((cfg.get("interjections") or {}).get("cooldown_segments") or 1))
+    emo_mode = str(cfg.get("emotion_control") or "hybrid")
+
+    state: dict[str, AgentAuctionState] = {}
+    token_mgr = SimpleTokenManager(max_bank=max_bank)
+    emotion = SimpleEmotionEngine(state=state, mode=emo_mode)
+    resolver = EnhancedAuctionResolver(state=state)
+    interrupt_pol = WindowInterruptPolicy()
+    interj = BasicInterjectionPlanner(cooldown_segments=cooldown)
+    return AuctionChatManager(
+        token_manager=token_mgr,
+        emotion_engine=emotion,
+        resolver=resolver,
+        interrupt_policy=interrupt_pol,
+        interjections=interj,
+        state=state,
+    )

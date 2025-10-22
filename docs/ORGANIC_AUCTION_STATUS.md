@@ -7,7 +7,7 @@ Last Updated: now
 
 - WP1 (Audio/TTS) — Strong MVP: audio controller API, Sim + ElevenLabs controllers scaffolded, measured beats, drift/latency profiling, duck/crossfade controls, controller factory wired into CLI. Offline tests green.
 - WP2 (Managers) — Partially implemented: simple + enhanced auction resolvers (pacing+softmax+evidence), simple + windowed interrupt policies, token manager. Emotion engine + interjection planner pending.
-- WP3 (Orchestrator) — Started: micro‑turn loop in place with token accrual, bidding, segment playback via audio controller, and simple interjection. Concurrency + hard‑interrupt cutoff not yet wired.
+- WP3 (Orchestrator) — Concurrency scaffolding in place: micro‑turn loop now spawns concurrent interjection planning with safe duck‑play and attaches deterministic IDs (auction_id/segment_id/clip_id) to metadata. Hard‑interrupt cutoff path scaffolded with guard‑band calculation; resolver‑driven selection pending and default‑off.
 - Docs — Design/Implementation plans up to date (chat plan, implementation plan, presets, governor, concurrency, lead time, interrupt modes).
 
 ## Work Packages — Status & Next
@@ -38,13 +38,17 @@ Remaining
 
 ### WP3: Orchestrator
 Completed
-- AuctionGroupChatOrchestrator skeleton
-- Micro‑turn loop MVP: token accrual → collect+resolve bids → speaker response → TTS playback → await beat → simple interjection → finish → append messages with metadata
+- Concurrency scaffolding: concurrent interjection planning with ducking; cancellation on segment finish; conservative defaults; context_version invalidation for concurrent tasks
+- Deterministic IDs on messages: `auction_id`, `segment_id`, `clip_id`
+- Guard‑band accessor wiring: uses audio controller `compute_commit_guard_ms()` when available; default guard fallback otherwise
+- Hard‑interrupt cutoff: resolver‑driven candidate selection, prefetch kicker, commit at Beat 1 if possible, crossfade current clip, play kicker
+- Provisional/Confirmed interrupts: optional `interrupt_provisional` events (flag), confirmed `hard_interrupt` events include timing `{guard_ms, beat, p95_first_chunk_ms, phase}` and `auction` fields `{bid, provisional, bids}`
+- Reserve prefetch: pre-generates likely next speaker’s response and reuses it on the following turn if selected; cancellable and version-safe
+- Segment metadata: `timing` includes `drift_ms`, `commit_guard_ms`, `p95_first_chunk_ms`; `auction` includes `bids`, `pacing`, and `talk_share`
 
 Next
-- Concurrency: spawn LLM tasks for interjections/bids/next‑segment prefetch with context_version tagging, timeouts, cancellation, and global/per‑agent concurrency limits
-- Hard‑interrupt cutoff: guard‑band commit; prebuffer top‑1 kicker; fallback path on miss; record events
-- Metadata: deterministic IDs (auction_id, segment_id, clip_id), bid details, pacing multipliers, drift
+- Optional: consume reserve across more complex selection rules (e.g., alliances, evidence priority)
+- Docs and examples: finalize QUICKSTART/plan snippets for the new metadata and flags
 
 ### WP12: Quality & Budget Governor
 Planned (not started)
@@ -105,4 +109,3 @@ Planned (not started)
 - Hard‑interrupt cutoff set as default; dual‑path inline acks optional (beat‑only mode)
 - Pacing EMA + softmax bid mapping; evidence‑backed tie‑breaks with quality gates
 - AIMD adaptive lead_time and top_k prebuffer; respect discard budget
-
