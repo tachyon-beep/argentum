@@ -17,6 +17,7 @@ from argentum.llm.provider import OpenAIProvider
 from argentum.orchestration.auction_chat import AuctionGroupChatOrchestrator
 from argentum.coordination.auction_manager import create_default_auction_manager
 from argentum.persistence import ConversationSession
+from argentum.audio.factory import get_audio_controller
 
 
 @click.command()
@@ -30,7 +31,10 @@ from argentum.persistence import ConversationSession
 @click.option("--summary-mode", type=click.Choice(["heuristic", "frontier", "local", "none"], case_sensitive=False))
 @click.option("--summary-command")
 @click.option("--emit-provisional-interrupt", is_flag=True, help="Emit provisional interrupt events for observability.")
-def auction(prompt, agents, micro_turns, emotion_control, interjection_min_importance, session_id, project, summary_mode, summary_command, emit_provisional_interrupt):
+@click.option("--tts-provider", type=click.Choice(["sim", "elevenlabs"], case_sensitive=False), help="Override TTS provider for this run.")
+@click.option("--tts-voice", help="Override TTS voice (provider-specific).")
+@click.option("--tts-latency", type=click.Choice(["low", "balanced", "high"], case_sensitive=False), help="TTS latency mode (provider-specific).")
+def auction(prompt, agents, micro_turns, emotion_control, interjection_min_importance, session_id, project, summary_mode, summary_command, emit_provisional_interrupt, tts_provider, tts_voice, tts_latency):
     """Run an auction-based group chat with interjections and interrupts."""
     env = _prepare_session_environment(command="auction", project=project, session_id=session_id, seed=prompt, summary_mode=summary_mode, summary_command=summary_command)
     manifest = env.manifest or {}
@@ -41,6 +45,25 @@ def auction(prompt, agents, micro_turns, emotion_control, interjection_min_impor
         auction_cfg["interjection_min_importance"] = float(interjection_min_importance)
 
     manager = create_default_auction_manager(auction_cfg)
+
+    # Optional TTS overrides: rebuild audio controller if flags provided
+    if any([tts_provider, tts_voice, tts_latency]):
+        m = dict(manifest)
+        convo = dict((m.get("conversation") or {}))
+        tts_cfg = dict((convo.get("tts") or {}))
+        if tts_provider:
+            tts_cfg["provider"] = "elevenlabs" if tts_provider.lower() == "elevenlabs" else "sim"
+        if tts_voice is not None:
+            tts_cfg["voice"] = tts_voice
+        if tts_latency is not None:
+            tts_cfg["latency_mode"] = tts_latency
+        convo["tts"] = tts_cfg
+        m["conversation"] = convo
+        try:
+            env.audio_controller = get_audio_controller(m)
+        except Exception:
+            pass
+
 
     agent_keys = list(agents) if agents else []
     if not agent_keys:

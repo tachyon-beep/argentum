@@ -40,23 +40,62 @@ class ElevenLabsStreamingAdapter:
         self.config = config or ElevenLabsConfig()
 
     async def stream(self, text: str):
-        """Yield streaming-like events offline.
+        """Yield streaming events.
 
-        This offline-friendly implementation yields a first chunk event so the
-        latency profiler can record a sample, then emits one `mark` per
-        sentence-like unit found in the text, followed by a final `done`.
-
-        In production, replace this method with a real ElevenLabs streaming API
-        client that yields `chunk` audio bytes and `mark` events at boundaries.
+        If ELEVENLABS_API_KEY and ELEVENLABS_VOICE are set (or provided via
+        config), attempt an HTTP streaming request and yield `chunk` events.
+        Otherwise, fallback to an offline path that emits a first `chunk` and
+        sentence-based `mark` events.
         """
-        # First chunk event to let controller record first-chunk latency
-        yield {"type": "chunk", "audio": b""}
+        try:
+            import os as _os
+            import httpx as _httpx
+        except Exception:
+            _os = None
+            _httpx = None
 
-        # Emit a mark per sentence boundary to simulate beats
+        api_key = (self.config.api_key if isinstance(self.config.api_key, str) else None)
+        voice = (self.config.voice if isinstance(self.config.voice, str) else None)
+        if _os is not None:
+            api_key = api_key or _os.getenv('ELEVENLABS_API_KEY')
+            voice = voice or _os.getenv('ELEVENLABS_VOICE')
+
+        use_network = bool(api_key and voice and _httpx is not None)
+        if use_network:
+            base = (_os.getenv('ELEVENLABS_API_BASE') if _os else None) or 'https://api.elevenlabs.io/v1/text-to-speech'
+            url = f"{base.rstrip('/')}/{voice}/stream"
+            headers = {
+                'xi-api-key': api_key,
+                'accept': 'audio/mpeg',
+                'content-type': 'application/json',
+            }
+            payload = {
+                'text': text,
+                'model_id': (_os.getenv('ELEVENLABS_MODEL') if _os else None) or 'eleven_monolingual_v1',
+            }
+            try:
+                timeout = _httpx.Timeout(10.0, connect=10.0, read=10.0)
+                async with _httpx.AsyncClient(timeout=timeout) as client:
+                    async with client.stream('POST', url, headers=headers, json=payload) as r:
+                        r.raise_for_status()
+                        first = True
+                        async for chunk in r.aiter_bytes():
+                            if first:
+                                yield {"type": "chunk", "audio": b""}
+                                first = False
+                            yield {"type": "chunk", "audio": chunk}
+                        yield {"type": "done"}
+                        return
+            except Exception:
+                # Fall through to offline path on any network failure
+                pass
+
+        # Offline path: first chunk, then sentence marks, then done
+        yield {"type": "chunk", "audio": b""}
         for _ in _split_sentences(text):
             yield {"type": "mark", "name": "beat"}
-
         yield {"type": "done"}
+
 
 
 def _split_sentences(text: str) -> list[str]:
